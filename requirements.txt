@@ -5,6 +5,7 @@ pydeck
 streamlit
 matplotlib
 pdf2txt_path
+PyPDF2
 pypdf
 pdf2text
 pdftotext
