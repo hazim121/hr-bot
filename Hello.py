@@ -24,7 +24,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
    
 #Function to get response from model
-def model_bot(prompt,db):   
+def model_bot(prompt):   
     doc = textract.process("pages/Employee Handbook.pdf")
     with open('pages/Employee Handbook.txt', 'w') as f:
         f.write(doc.decode('utf-8'))
