@@ -47,7 +47,7 @@ def model_bot(prompt):
     
     chunks = text_splitter.create_documents([text])
     
-    os.environ["OPENAI_API_KEY"] = "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"
+    os.environ["OPENAI_API_KEY"] = "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"
     
     # Embed text and store embeddings
     # Get embedding model
