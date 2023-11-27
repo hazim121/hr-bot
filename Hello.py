@@ -26,7 +26,7 @@ def model_bot(prompt):
     from langchain.chains import ConversationalRetrievalChain
     
     import textract
-    doc = textract.process("Employee Handbook.pdf")
+    doc = textract.process("pages/Employee Handbook.pdf")
     with open('pages/Employee Handbook.txt', 'w') as f:
         f.write(doc.decode('utf-8'))
     with open('pages/Employee Handbook.txt', 'r') as f:
