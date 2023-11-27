@@ -20,6 +20,7 @@ numpy
 pandas
 pydeck
 streamlit
+tiktoken
 matplotlib
 pdf2txt_path
 PyPDF2
