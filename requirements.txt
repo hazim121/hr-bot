@@ -5,7 +5,7 @@ streamlit
 tiktoken
 matplotlib
 langchain
-six==1.12.0
+six
 textract-py3
 transformers
 
