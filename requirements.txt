@@ -13,4 +13,5 @@ python2
 six
 textract
 transformers
+pip install pypdf
 
