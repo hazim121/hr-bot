@@ -9,6 +9,6 @@ six
 textract-py3
 transformers
 openai
---use-pep517
+pep517
 dotenv
 
