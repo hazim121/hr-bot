@@ -8,4 +8,3 @@ langchain
 textract
 transformers
 python2
-pdftotext
