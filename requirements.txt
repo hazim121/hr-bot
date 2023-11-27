@@ -5,6 +5,7 @@ pydeck
 streamlit
 matplotlib
 langchain
+six
 textract
 transformers
 python2
