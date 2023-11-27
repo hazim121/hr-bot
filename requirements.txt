@@ -9,6 +9,6 @@ matplotlib
 PyPDF2
 langchain
 six
-textract
+textract==1.6.5
 transformers
 
