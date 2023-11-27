@@ -1,13 +1,11 @@
-
-altair
-numpy
-pandas
+numpy==1.23.5
+pandas==1.5.3
 pydeck
 streamlit
 tiktoken
 matplotlib
 langchain
-six
+six==1.12.0
 textract==1.6.5
 transformers
 
