@@ -51,7 +51,7 @@ def model_bot(prompt):
 
     load_dotenv()
 
-    openai_api_key = os.getnv(${{ OPENAI_API_KEY }})
+    openai_api_key=st.secrets["key"]
     os.environ["OPENAI_API_KEY"] = openai_api_key
     
     # Embed text and store embeddings
