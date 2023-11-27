@@ -8,4 +8,5 @@ langchain
 six
 textract-py3
 transformers
+openai
 
