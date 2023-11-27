@@ -41,7 +41,7 @@ if prompt := st.chat_input("Hi! How can i help you?"):
     st.chat_message("user").markdown(prompt)
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
-        doc = textract.process("pages/Employee Handbook.pdf")
+    doc = textract.process("pages/Employee Handbook.pdf")
     with open('pages/Employee Handbook.txt', 'w') as f:
         f.write(doc.decode('utf-8'))
     with open('pages/Employee Handbook.txt', 'r') as f:
