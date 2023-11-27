@@ -46,8 +46,15 @@ def model_bot(prompt):
     )
     
     chunks = text_splitter.create_documents([text])
-    
-    os.environ["OPENAI_API_KEY"] = "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"
+    from dotenv import load_dotenv
+
+
+    load_dotenv()
+
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+
+
+    os.environ["OPENAI_API_KEY"] = openai_api_key
     
     # Embed text and store embeddings
     # Get embedding model
