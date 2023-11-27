@@ -1,4 +1,16 @@
 import streamlit as st
+import os
+import pandas as pd
+import matplotlib.pyplot as plt
+from transformers import GPT2TokenizerFast
+from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+from langchain.chains.question_answering import load_qa_chain
+from langchain.llms import OpenAI
+from langchain.chains import ConversationalRetrievalChain
+import textract
 
 st.title("HR Bot")
 
@@ -12,22 +24,24 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
    
 #Function to get response from model
-def model_bot(prompt):
-    import os
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    from transformers import GPT2TokenizerFast
-    from langchain.document_loaders import PyPDFLoader
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
-    from langchain.embeddings import OpenAIEmbeddings
-    from langchain.vectorstores import FAISS
-    from langchain.chains.question_answering import load_qa_chain
-    from langchain.llms import OpenAI
-    from langchain.chains import ConversationalRetrievalChain
-    import textract
+def model_bot(prompt,db):     
+    chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+    query = prompt    
 
-    
-    doc = textract.process("pages/Employee Handbook.pdf")
+    docs = db.similarity_search(query) 
+
+    ans=chain.run(input_documents=docs, question=query)  
+
+
+    return ans
+
+# React to user input
+if prompt := st.chat_input("Hi! How can i help you?"):
+    # Display user message in chat message container
+    st.chat_message("user").markdown(prompt)
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+        doc = textract.process("pages/Employee Handbook.pdf")
     with open('pages/Employee Handbook.txt', 'w') as f:
         f.write(doc.decode('utf-8'))
     with open('pages/Employee Handbook.txt', 'r') as f:
@@ -59,25 +73,8 @@ def model_bot(prompt):
     embeddings = OpenAIEmbeddings()  
     # Create vector database
     db = FAISS.from_documents(chunks, embeddings)
-    
-    chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
-    query = prompt    
 
-    docs = db.similarity_search(query) 
-
-    ans=chain.run(input_documents=docs, question=query)  
-
-
-    return ans
-
-# React to user input
-if prompt := st.chat_input("Hi! How can i help you?"):
-    # Display user message in chat message container
-    st.chat_message("user").markdown(prompt)
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-
-    response = model_bot(prompt)
+    response = model_bot(prompt,db)
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
