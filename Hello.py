@@ -57,7 +57,7 @@ def model_bot(prompt):
     embeddings = OpenAIEmbeddings()  
     # Create vector database
     db = FAISS.from_documents(chunks, embeddings)
-    chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+    chain = load_qa_chain(OpenAI(temperature=2), chain_type="stuff")
     query = prompt    
 
     docs = db.similarity_search(query) 
