@@ -10,5 +10,5 @@ textract-py3
 transformers
 openai
 pep517==0.13.1
-dotenv
+python-dotenv
 
