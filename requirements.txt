@@ -22,6 +22,7 @@ pydeck
 streamlit
 matplotlib
 pdf2txt_path
+PyPDF2
 poppler
 PyPDF2==1.26.0
 pypdf
