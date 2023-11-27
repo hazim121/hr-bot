@@ -7,13 +7,8 @@ streamlit
 tiktoken
 matplotlib
 PyPDF2
-poppler
-PyPDF2==1.26.0
-pypdf
-pdf2text
-pdftotext
 langchain
 six
-textract==1.6.2
+textract
 transformers
 
