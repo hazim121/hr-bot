@@ -29,7 +29,6 @@ pypdf
 pdf2text
 pdftotext
 langchain
-python2
 six
 textract==1.6.2
 transformers
