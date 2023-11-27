@@ -25,38 +25,38 @@ for message in st.session_state.messages:
    
 #Function to get response from model
 def model_bot(prompt,db):   
-doc = textract.process("pages/Employee Handbook.pdf")
-with open('pages/Employee Handbook.txt', 'w') as f:
-    f.write(doc.decode('utf-8'))
-with open('pages/Employee Handbook.txt', 'r') as f:
-    text = f.read()
+    doc = textract.process("pages/Employee Handbook.pdf")
+    with open('pages/Employee Handbook.txt', 'w') as f:
+        f.write(doc.decode('utf-8'))
+    with open('pages/Employee Handbook.txt', 'r') as f:
+        text = f.read()
         
-tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
+    tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     
-def count_tokens(text: str) -> int:
-    return len(tokenizer.encode(text))
+    def count_tokens(text: str) -> int:
+        return len(tokenizer.encode(text))
     
-text_splitter = RecursiveCharacterTextSplitter(
+    text_splitter = RecursiveCharacterTextSplitter(
   
-    chunk_size = 512,
-    chunk_overlap  = 24,
-    length_function = count_tokens,
-)
+        chunk_size = 512,
+        chunk_overlap  = 24,
+        length_function = count_tokens,
+    )
     
-chunks = text_splitter.create_documents([text])
+    chunks = text_splitter.create_documents([text])
 
-from dotenv import load_dotenv
+    from dotenv import load_dotenv
 
-load_dotenv()
+    load_dotenv()
 
-openai_api_key=st.secrets["key"]
-os.environ["OPENAI_API_KEY"] = openai_api_key
+    openai_api_key=st.secrets["key"]
+    os.environ["OPENAI_API_KEY"] = openai_api_key
     
-# Embed text and store embeddings
-# Get embedding model
-embeddings = OpenAIEmbeddings()  
-# Create vector database
-db = FAISS.from_documents(chunks, embeddings)
+    # Embed text and store embeddings
+    # Get embedding model
+    embeddings = OpenAIEmbeddings()  
+    # Create vector database
+    db = FAISS.from_documents(chunks, embeddings)
     chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
     query = prompt    
 
