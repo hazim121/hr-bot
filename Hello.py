@@ -14,7 +14,6 @@ for message in st.session_state.messages:
 #Function to get response from model
 def model_bot(prompt):
     import os
-    import PyPDF2
     import pandas as pd
     import matplotlib.pyplot as plt
     from transformers import GPT2TokenizerFast
