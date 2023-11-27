@@ -6,6 +6,6 @@ tiktoken
 matplotlib
 langchain
 six==1.12.0
-textract==1.6.5
+textract-py3
 transformers
 
