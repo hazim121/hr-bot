@@ -12,7 +12,7 @@ pdftotext
 langchain
 python2
 six
-textract
+txtract==1.6.2
 transformers
 pip install pypdf
 
