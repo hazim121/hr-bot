@@ -24,7 +24,6 @@ def model_bot(prompt):
     from langchain.chains.question_answering import load_qa_chain
     from langchain.llms import OpenAI
     from langchain.chains import ConversationalRetrievalChain
-    import pypdf
 
 
 
