@@ -25,10 +25,14 @@ def model_bot(prompt):
     from langchain.chains.question_answering import load_qa_chain
     from langchain.llms import OpenAI
     from langchain.chains import ConversationalRetrievalChain
+    import textract
 
-
-
-    text = PyPDF2.PdfReader('pages/Employee Handbook.pdf')
+    
+    doc = textract.process("pages/Employee Handbook.pdf")
+    with open('pages/Employee Handbook.txt', 'w') as f:
+        f.write(doc.decode('utf-8'))
+    with open('pages/Employee Handbook.txt', 'r') as f:
+        text = f.read()
         
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     
