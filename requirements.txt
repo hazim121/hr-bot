@@ -4,6 +4,7 @@ pandas
 pydeck
 streamlit
 matplotlib
+pdf2txt_path
 langchain
 python2
 six
