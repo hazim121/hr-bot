@@ -14,6 +14,7 @@ for message in st.session_state.messages:
 #Function to get response from model
 def model_bot(prompt):
     import os
+    import PyPDF2
     import pandas as pd
     import matplotlib.pyplot as plt
     from transformers import GPT2TokenizerFast
@@ -27,12 +28,7 @@ def model_bot(prompt):
 
 
 
-    import textract
-    doc = textract.process("pages/Employee Handbook.pdf")
-    with open('pages/Employee Handbook.txt', 'w') as f:
-        f.write(doc.decode('utf-8'))
-    with open('pages/Employee Handbook.txt', 'r') as f:
-        text = f.read()
+    text = PyPDF2.PdfReader('pages/Employee Handbook.pdf')
         
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     
