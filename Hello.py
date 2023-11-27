@@ -24,19 +24,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
    
 #Function to get response from model
-def model_bot(prompt,db):     
-    chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
-    query = prompt    
-
-    docs = db.similarity_search(query) 
-
-    ans=chain.run(input_documents=docs, question=query)  
-
-
-    return ans
-
-
-
+def model_bot(prompt,db):   
 doc = textract.process("pages/Employee Handbook.pdf")
 with open('pages/Employee Handbook.txt', 'w') as f:
     f.write(doc.decode('utf-8'))
@@ -69,6 +57,19 @@ os.environ["OPENAI_API_KEY"] = openai_api_key
 embeddings = OpenAIEmbeddings()  
 # Create vector database
 db = FAISS.from_documents(chunks, embeddings)
+    chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+    query = prompt    
+
+    docs = db.similarity_search(query) 
+
+    ans=chain.run(input_documents=docs, question=query)  
+
+
+    return ans
+
+
+
+
 
 
 # React to user input
