@@ -27,9 +27,12 @@ def model_bot(prompt):
 
 
 
-    loader = PyPDFLoader("pages/Employee Handbook.pdf")  
-
-    text = loader.load_and_split()
+    import textract
+    doc = textract.process("pages/Employee Handbook.pdf")
+    with open('pages/Employee Handbook.txt', 'w') as f:
+        f.write(doc.decode('utf-8'))
+    with open('pages/Employee Handbook.txt', 'r') as f:
+        text = f.read()
         
     tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
     
