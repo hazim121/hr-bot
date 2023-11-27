@@ -6,7 +6,6 @@ pydeck
 streamlit
 tiktoken
 matplotlib
-pdf2txt_path
 PyPDF2
 poppler
 PyPDF2==1.26.0
