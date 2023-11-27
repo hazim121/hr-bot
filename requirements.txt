@@ -5,6 +5,7 @@ pydeck
 streamlit
 matplotlib
 pdf2txt_path
+poppler
 PyPDF2==1.26.0
 pypdf
 pdf2text
@@ -14,5 +15,4 @@ python2
 six
 textract==1.6.2
 transformers
-pip install pypdf
 
