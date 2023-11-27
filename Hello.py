@@ -1,51 +1,79 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import streamlit as st
-from streamlit.logger import get_logger
 
-LOGGER = get_logger(__name__)
+st.title("HR Bot")
 
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+   
+#Function to get response from model
+def model_bot(prompt):
+    import os
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from transformers import GPT2TokenizerFast
+    from langchain.document_loaders import PyPDFLoader
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.embeddings import OpenAIEmbeddings
+    from langchain.vectorstores import FAISS
+    from langchain.chains.question_answering import load_qa_chain
+    from langchain.llms import OpenAI
+    from langchain.chains import ConversationalRetrievalChain
+    
+    import textract
+    doc = textract.process("Employee Handbook.pdf")
+    with open('Employee Handbook.txt', 'w') as f:
+        f.write(doc.decode('utf-8'))
+    with open('Employee Handbook.txt', 'r') as f:
+        text = f.read()
+        
+    tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
+    
+    def count_tokens(text: str) -> int:
+        return len(tokenizer.encode(text))
+    
+    text_splitter = RecursiveCharacterTextSplitter(
+  
+        chunk_size = 512,
+        chunk_overlap  = 24,
+        length_function = count_tokens,
     )
+    
+    chunks = text_splitter.create_documents([text])
+    
+    os.environ["OPENAI_API_KEY"] = "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"
+    
+    # Embed text and store embeddings
+    # Get embedding model
+    embeddings = OpenAIEmbeddings()  
+    # Create vector database
+    db = FAISS.from_documents(chunks, embeddings)
+    
+    chain = load_qa_chain(OpenAI(temperature=0), chain_type="stuff")
+    query = prompt    
 
-    st.write("# Welcome to Streamlit! 👋")
+    docs = db.similarity_search(query) 
 
-    st.sidebar.success("Select a demo above.")
-
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+    ans=chain.run(input_documents=docs, question=query)  
 
 
-if __name__ == "__main__":
-    run()
+    return ans
+
+# React to user input
+if prompt := st.chat_input("Hi! How can i help you?"):
+    # Display user message in chat message container
+    st.chat_message("user").markdown(prompt)
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    response = model_bot(prompt)
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        st.markdown(response)
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})
