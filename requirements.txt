@@ -6,6 +6,7 @@ streamlit
 matplotlib
 pdf2txt_path
 pdf2text
+pdftotext
 langchain
 python2
 six
