@@ -28,4 +28,3 @@ def introduction():
 
 introduction()
 
-show_code(data_frame_demo)
